@@ -1,20 +1,29 @@
-#Using beautifulsoup to scrape multiple URLs and output as list in csv (slight variation from above module)
+#Using beautifulsoup to scrape multiple URLs and print as list.
 
+#Step 1: Importing the necessary packages.
 import requests
 import csv
 import time
 from bs4 import BeautifulSoup
 
+#Step 2: Consolidating required URLs from source website.
 urls = ['https://www.ema.gov.sg/Licensees_Electricity_Generation_Company.aspx', 'https://www.ema.gov.sg/licensees-electricity-importer.aspx', 'https://www.ema.gov.sg/Licensees_Electricity_Retailer.aspx', 'https://www.ema.gov.sg/Licensees_Electricity_Wholesaler.aspx','https://www.ema.gov.sg/Licensees_Electricity_Market_Support_Services.aspx','https://www.ema.gov.sg/Licensees_Electricity_Transmission_Company_Agent.aspx', 'https://www.ema.gov.sg/Licensees_Electricity_Market_Company.aspx', 'https://www.ema.gov.sg/Licensees_Gas_Transporter.aspx', 'https://www.ema.gov.sg/Licensees_Gas_Transport_Agent.aspx', 'https://www.ema.gov.sg/Licensees_Gas_Shipper.aspx', 'https://www.ema.gov.sg/Licensees_Gas_Retailer.aspx','https://www.ema.gov.sg/Licensees_Gas_Importer_LNG.aspx', 'https://www.ema.gov.sg/Licensees_Gas_Onshore_Receiving_Facility_Operator.aspx', 'https://www.ema.gov.sg/Licensees_Gas_LNG_Terminal_Operator.aspx']
+
+#Initiate a for loop to run through all URLs listed above.
 for url in urls:
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
     intlink_tag = soup.find_all(class_="intlink")
     
+#Step 3: Casting the output as strings in a list.   
     text_list = []
           
     for items in intlink_tag:
         indiv_text = items.text.strip()
         text_list.append(indiv_text)
-        
-    print([item for item in text_list if item not in ('Home','Licensees','Electricity Licensing','Electricity Licences','Gas Licensing', 'Gas Licences')])
+#Step 4: Printing the output
+    print([item for item in text_list if item not in ('Home','Licensees','Electricity Licensing','Electricity Licences','Gas Licensing', 'Gas Licences','LNG Terminal Operator','View the list of retailers participating in Open Electricity Market')])
+
+#Areas of improvement currently in the works include: 
+a. Automatically writing the output into .csv file after Step 4; 
+b. Automatically consolidate all required URLs from parent element instead of child element.
